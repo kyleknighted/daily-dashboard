@@ -1,0 +1,62 @@
+!!! 5
+html
+  head
+    title The Able View
+    link(rel='stylesheet', href='/stylesheets/bootstrap.min.css')
+    link(rel='stylesheet', href='/stylesheets/bootstrap-responsive.min.css')
+    style
+      body { padding-top: 60px; padding-bottom: 40px; }
+      .sidebar-nav { padding: 9px 0; }
+      #task-table thead th:nth-child(1) { width: 755px; }
+      #task-table thead th:nth-child(2) { width: 204px; }
+    script(src='/socket.io/socket.io.js')
+    script(src='http://cdnjs.cloudflare.com/ajax/libs/jquery/1.7.2/jquery.min.js')
+    script
+      var socket = io.connect('http://localhost:3000');
+      $(function () {
+        var asana = !{asana}
+        $('.hero-unit h1').text('Hello ' + asana.name)
+        // $('#workspaces').html('')
+        $.each(asana.workspaces, function(i, ws){
+          $('#workspaces').after('<li id="'+ws.id+'" class="workspace"><a href="#" data-workspace="'+ws.id+'">'+ws.name+'</a></li>');
+        })
+
+        $('.workspace a').on('click', function(e){
+          $('.workspace.active').removeClass('active');
+          $(this).parent().addClass('active');
+          var workspace = $(this).data('workspace')
+          $('#workspace-name').text($(this).text())
+          var data = { workspace: workspace }
+          $('#load-tasks').text('Loading...');
+          socket.emit('send_workspace', data);
+          e.preventDefault()
+        })
+      })
+      
+      socket.on('get_workspace_tasks', function (tasks) {
+        if(tasks.length > 0) {
+          $('#load-tasks').hide()
+          $(tasks).each(function(i, t){
+            if(t.name != '') {
+              data = {taskId:t.id, taskName:t.name};
+              socket.emit('send_task', data);
+            }
+          });
+        } else {
+          $('#load-tasks').text('No Tasks Available')
+        }
+      });
+
+      socket.on('get_task_project', function (project) {
+        if(project.data.length > 0) {
+          projName = '<span class="label label-info">'+project.data[0].name+'</span>';
+        } else {
+          projName = '<span class="label">N/A</span>';
+        }
+        $('#task-table tbody').append('<tr id="'+project.task.taskId+'"><td><a href="#" data-task="'+project.task.taskId+'">'+project.task.taskName+'</a></td>' +
+                                      '<td>'+projName+'</td>' + 
+                                      '<td><a data-toggle="modal" href="#notes-modal" class="btn btn-primary"><i class="icon-list-alt icon-white"></i> Notes</a> ' +
+                                      '<a href="#" class="btn btn-success"><i class="icon-ok icon-white"></i> Close</a></td></tr>');
+      });
+      
+  body!= body

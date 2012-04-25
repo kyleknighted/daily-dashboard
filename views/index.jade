@@ -1,0 +1,52 @@
+div.navbar.navbar-fixed-top
+  div.navbar-inner
+    div.container-fluid
+      a.btn.btn-navbar(data-toggle="collapse", data-target=".nav-collapse")
+      a.brand(href="/") The Able View
+      div.nav-collapse
+        ul.nav
+          li.active
+            a(href="#") Dashboard
+          li
+            a(href="#") Something
+          li
+            a(href="#") Something
+          li
+            a(href="#") Something
+
+div.container-fluid
+  div.row-fluid
+    div.span3
+      div.well.sidebar-nav
+        ul.nav.nav-list
+          li#workspaces.nav-header Workspaces
+    div.span9
+      div.hero-unit
+        h1 Loading...
+      div.row-fluid
+        div.span12
+          h2#workspace-name Choose a Workspace
+          table#task-table.table.table-striped
+            thead
+              tr
+                th#tasks-col Task
+                th Project
+                th Actions
+            tbody
+              tr
+                td#load-tasks(colspan="3") Choose Workspace For Tasks
+
+div#notes-modal.modal.fade.hide
+  div.modal-header
+    button.close(data-dismiss="modal") &times;
+    h3 Some Header
+  div.modal-body
+    p Some Content Goes Here
+  div.modal-footer
+    a.btn(href="#") Close
+    a.btn.btn-success(href="#") Save Changes
+
+
+script(src='/javascripts/json2.js')
+script(src='/javascripts/bootstrap.min.js')
+script(src='/javascripts/bootstrap-transition.js')
