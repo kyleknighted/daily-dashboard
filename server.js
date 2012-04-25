@@ -1,4 +1,3 @@
-
 /**
  * Module dependencies.
  */
@@ -26,7 +25,7 @@ var smtpTransport = nodemailer.createTransport("SMTP",{
     }
 });
 
-var asanaKey = '8helRNC.5Ily66ejv3SzRcFsTHk3buHV';
+var asanaKey = 'APIKEY';
 var asanaUserRequest = url.parse('https://'+asanaKey+':@app.asana.com/api/1.0/users/me')
 
 // Configuration
